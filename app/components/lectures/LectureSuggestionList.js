@@ -12,7 +12,7 @@ class LectureSuggestionList extends React.Component {
 
 	render() {
 		return(
-			<div>
+			<div style={{marginTop:"100px"}}>
 				{this.state.lectureList !== null && this.state.lectureList.length>=1 ? this.state.lectureList.map((lecture)=>{
 							return <LectureDisplay onClickHandler={()=>console.log("clicked on suggestions")} {...lecture} />;
 				}): null}

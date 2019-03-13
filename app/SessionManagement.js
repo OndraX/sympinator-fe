@@ -56,7 +56,6 @@ window.onbeforeunload = function() {
 
 window.onload = function() {
     UserData = localStorage.getItem("UserData");
-    alert(name);
 };
 	return {
 		getData: getData,

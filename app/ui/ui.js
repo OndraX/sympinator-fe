@@ -1,7 +1,7 @@
 import React from "react"
 import WordArt from "react-wordart"
 
-const isSensible = true;
+const isSensible = false;
 const styles = [
 	"rainnbow", "blues", "superhero", "radial", "tilt", "purple", "horizon", "italicOutline", "slate" ];
 
@@ -10,7 +10,7 @@ class UIHeaderStyle extends React.Component {
 		if(isSensible){
 			return( <span>{this.props.text}</span>);
 		}else{
-			return(<WordArt text={this.props.text} size="100" theme={styles[Math.floor(Math.random()*styles.length)]} />);
+			return(<WordArt text={this.props.text} size="40" theme={styles[Math.floor(Math.random()*styles.length)]} />);
 		}
 }
 
