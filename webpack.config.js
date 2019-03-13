@@ -11,7 +11,13 @@ module.exports = {
 	module: {
 		rules: [
 			{ test: /\.(js)$/, use: 'babel-loader' },
-			{ test: /\.css$/, use: ['babel-loader', 'css-loader' ] }
+			{ test: /\.css$/, use: ['style-loader','babel-loader', 'css-loader?modules=true&camelCase=true' ] }
+		]
+	},
+	resolve: {
+		modules: [
+			path.resolve('./client'),
+			path.resolve('./node_modules')
 		]
 	},
 	mode: 'development',
@@ -22,7 +28,6 @@ module.exports = {
 		inline: true,
 		port: 8080
 	},
-	watch: true,
 	plugins: [
 		new htmlwp({
 			template: 'app/index.html',

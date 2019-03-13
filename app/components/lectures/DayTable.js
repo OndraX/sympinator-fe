@@ -1,15 +1,66 @@
 import React from "react";
-import DayTableLectureCell from "./DayTableCell";
-import EventsCarousel from "./EventsCarousel";
+import DayTableLectureCell from "components/lectures/daytable/DayTableCell";
+import EventsCarousel from "components/lectures/daytable/EventsCarousel";
 import ReactModal from "react-modal";
 import BaseButton from "ui/BaseButton";
 
+const NULLIDENTIFIER = 0;
 // TODO: automatically select sole found item
 // TODO: Drag and Drop
 // TODO: editing
-// TODO: give visual cues of update
 // TODO: lookable GUI
+// the data to be edited
+//
+// var tableData = {
+// 	lectures: {
+// 		"515b6f2b":{"Name": "Přednášející",
+// 			"lectureName": "Přednáška",
+// 			"bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", },
+// 		"6f2b7d6f":{"Name": "Mluvčí",
+// 			"lectureName": "Promluva",
+// 			"bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", },
+// 		"774f7093":{"Name": "Řečník",
+// 			"lectureName": "Řeč",
+// 			"bio": "Lorem ipsum sit amet,  adipiscing elit.",
+// 			}},
+// 	"day": "Saturday",
+// 	"rooms": ["A1","A2","B3","C5"],
+// 	"hours": ["10:00","12:00","14:00","16:00"],
+// 	"lectureTable":
+// 	[["515b6f2b","774f7093","6f2b7d6f","774f7093"],
+// 		["6f2b7d6f","774f7093","774f7093","515b6f2b"],
+// 		["515b6f2b","774f7093","6f2b7d6f","6f2b7d6f"],
+// 		["515b6f2b","6f2b7d6f","774f7093","774f7093"]]
+// };
 
+
+// {{{ TableGetter -- fetches response request, renders it as table
+class TableGetter extends React.Component {
+	// fetch data from api
+	getTableData() {
+		fetch("/api/timetable",{method:"GET"})
+			.then((response) => response.json())
+			.then((response) => {
+				console.log(response.tableData);
+				this.setState({tableData:response.tableData});
+			})
+			.catch((error) => console.log(error));
+	}
+	constructor(props){
+		super(props)
+		this.state = {tableData:null}
+		this.getTableData();
+	}
+
+	render() {
+		return(
+			<div>
+				{this.state.tableData?<DayTable data={this.state.tableData}/>:<span>"loading..."</span>}
+		</div>
+		);
+	}
+}
+// }}}
 // {{{ TableHeaderContainer
 class TableHeaderContainer extends React.Component {
 	render() {
@@ -17,7 +68,7 @@ class TableHeaderContainer extends React.Component {
 			<thead>
 				<tr className="table-header" style = {{background:"blue"}}>
 					<td></td>
-					{this.props.cells.map((colName,index) => (<td key={index} style ={{  background:"red", margin: "4px"}}>{colName}</td>))}
+					{this.props.cells.map((colNameObj,index) => (<td key={index} style ={{  background:"red", margin: "4px"}}>{colNameObj.Label}</td>))}
 				</tr>
 			</thead>
 		);
@@ -39,7 +90,11 @@ class DayTable extends React.Component {
 			xToFill: null,
 			yToFill: null,
 		};
+
+
 	}
+
+	// end fetch data from api
 	// {{{ lecture editing functions
 	selectLectureForInsert(uuid) {
 	this.setState({itemSelected: uuid, lectureBeingApplied: this.props.data.lectures[uuid]});
@@ -87,9 +142,11 @@ class DayTable extends React.Component {
 		};
 		return (
 			<div>
+
+			
 			<EventsCarousel {...eventsCarouselProps}
 				selectHandler= {this.selectLectureForInsert.bind(this)} />
-			
+
 			<ReactModal
 				isOpen={(this.state.hasModal == "select")}
 				contentLabel="Vyberte prosím přednášku k přidání"
@@ -98,21 +155,27 @@ class DayTable extends React.Component {
 				<EventsCarousel {...eventsCarouselProps}
 					selectHandler={ this.modalSelectLectureForInsert.bind(this)} />
 			</ReactModal>
-
 			<ReactModal
 				isOpen={(this.state.hasModal == "edit")}
 				contentLabel="Úprava přednášky"
 				appElement={document.getElementById("root")}>
 			<BaseButton onClick={this.handleModalClose.bind(this)}>x</BaseButton>
 			</ReactModal>
-
 				<table>
 					<TableHeaderContainer cells={this.props.data.rooms} />
 					<tbody>
 						{this.state.lectureTable.map((row,index)=>(<TableRowContainer
 							key={index}
 							rowNameGetter={(y) => {return this.props.data.hours[y];} }
-							lectureGetter={(id) => {return this.props.data.lectures[id];}}
+							lectureGetter={(id) => {console.log("getting lecture id",id,"from",this.props.data.lectures);
+							var lid = this.props.data.lectures[id];
+							if (lid != NULLIDENTIFIER){
+							return lid;
+							}else{
+							console.log("lecture is null");
+							return null;
+							}
+							}}
 							y={index}
 							clickHandlers={clickHandlers}
 							cells={row} />))}
@@ -127,12 +190,14 @@ class DayTable extends React.Component {
 
 class TableRowContainer extends React.Component {
 	render() {
+		const nullLecture = {LectureName: "zatím prázdno"};
 		return(
 			<tr>
 				<td style={{background:"green"}}>
-					{this.props.rowNameGetter(this.props.y)}
+					{this.props.rowNameGetter(this.props.y).Label}
 				</td>
 				{ this.props.cells.map((referredUUID,index)=>(
+				referredUUID !== NULLIDENTIFIER ?
 					<DayTableLectureCell
 						key={index}
 						y={this.props.y}
@@ -140,7 +205,17 @@ class TableRowContainer extends React.Component {
 						referredUUID={referredUUID}
 						putClickHandler={this.props.putClickHandler}
 						lecture={this.props.lectureGetter(referredUUID)}
-					{...this.props.clickHandlers}/>))
+						{...this.props.clickHandlers}/>
+					:	
+					<DayTableLectureCell
+						key={index}
+						y={this.props.y}
+						x={index}
+						referredUUID={null}
+						putClickHandler={this.props.putClickHandler}
+						lecture={nullLecture}
+						{...this.props.clickHandlers}/>
+						))
 				}
 			</tr>
 		);
@@ -148,4 +223,4 @@ class TableRowContainer extends React.Component {
 }
 // }}}
 
-export default DayTable;
+export {DayTable,TableGetter};

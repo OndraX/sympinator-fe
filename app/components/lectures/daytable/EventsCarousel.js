@@ -76,14 +76,27 @@ class EventsCarousel extends React.Component {
 	}
 }
 // }}}
+class ConcatText extends React.Component {
+	render() {
+		var concattedText = this.props.text;
+		concattedText = concattedText.substr(0,this.props.lengthTo)
+		if(concattedText.length !== this.props.text.length){
+			concattedText += "…";
+		}
+		return (
+			<span>{concattedText}</span>
+		)
+	}
+}
 // {{{ EventDisplay
 class EventDisplay extends React.Component {
 	render() {
 		return (
 			<div onClick={this.props.clickHandler} style={{display:"inline-block",padding:"4px",background:this.props.bg,border:"3px solid black",boxSizing:"borderBox"}}>
-				<strong>{this.props.eventObject.name}:</strong>
-				{this.props.eventObject.lectureName}
-				<p>{this.props.eventObject.bio.substr(0,160)+"..."}</p>
+				<strong>{this.props.eventObject.SpeakerName}:</strong>
+				{this.props.eventObject.LectureName}
+					<p><ConcatText text={this.props.eventObject.SpeakerBio} lengthTo="160"/></p>
+				<p><ConcatText text={this.props.eventObject.LectureDesc} lengthTo="160"/></p>
 			</div>
 		)
 	}

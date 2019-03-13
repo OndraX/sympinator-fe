@@ -1,0 +1,5 @@
+new XMLHttpRequest("POST",
+headers -- origin, Authentication, 
+request body)
+
+check status, await response
