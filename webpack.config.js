@@ -11,8 +11,17 @@ module.exports = {
 	module: {
 		rules: [
 			{ test: /\.(js)$/, use: 'babel-loader' },
-			{ test: /\.css$/, use: ['style-loader','babel-loader', 'css-loader?modules=true&camelCase=true' ] }
-		]
+			{ test: /\.css$/, use: ['style-loader','babel-loader', 'css-loader?modules=true&camelCase=true' ] },
+        {
+            test: /\.(png|jp(e*)g|svg)$/,  
+            use: [{
+                loader: 'url-loader',
+                options: { 
+                    limit: 8000,
+                    name: 'images/[hash]-[name].[ext]'
+                } 
+            }]
+        }		]
 	},
 	resolve: {
 		modules: [

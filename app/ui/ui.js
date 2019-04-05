@@ -1,9 +1,10 @@
 import React from "react"
 import WordArt from "react-wordart"
+import logo from "./logo.png"
 
-const isSensible = false;
+const isSensible = true;
 const styles = [
-	"rainnbow", "blues", "superhero", "radial", "tilt", "purple", "horizon", "italicOutline", "slate" ];
+	"rainbow", "blues", "superhero", "radial", "tilt", "purple", "horizon", "italicOutline", "slate" ];
 
 class UIHeaderStyle extends React.Component {
 	render(){
@@ -25,4 +26,20 @@ class UILinkStyle extends React.Component {
 }
 }
 
-export {UIHeaderStyle, UILinkStyle};
+class UILogo extends React.Component {
+	render(){
+		const imageStyle = {width: "auto", height: "40px",position: "relative",}
+		return(
+			<img src={logo} style={imageStyle} alt={this.props.alt}/>
+		);
+}
+}
+
+const UIConstants = {
+	bgDark: "#2193b0",
+	bgLight:"#6dd5ed",
+	linkColour:"#efefff"
+
+}
+
+export {UIHeaderStyle, UILinkStyle, UILogo, UIConstants};

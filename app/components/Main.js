@@ -7,6 +7,7 @@ import LoginForm from "components/login/Login"
 import RegisterForm from "components/login/Register"
 import LectureEditor from "components/lectures/LectureEditor"
 import SuggestionForm from "components/lectures/Suggest"
+import {TableGetter} from "components/lectures/DayTable"
 import LectureList from "components/lectures/LectureList"
 import LectureSuggestionList from "components/lectures/LectureSuggestionList"
 import LecturesLanding from "components/LecturesLanding"
@@ -68,18 +69,24 @@ class Main extends React.Component {
 		}
 		// }}}
 		// ROUTING
+		const AuthRouteProps = {
+			loggedIn: this.state.loggedIn,
+			loginProps: loginProps,
+			onLoadSource: function(){//console.log(shit)
+			}
+		};
 		return(
 			<main>
 					<Switch>
 							<Route path='/login' component={() => (this.state.loggedIn) ? <RootComponent /> : (<LoginForm {...loginProps} />)} />
 							<Route path='/register' component={() => (this.state.loggedIn) ? <RootComponent /> : (<RegisterForm {...loginProps} />)} />
-					<AuthRoute exact loggedIn={this.state.loggedIn} path='/' loginProps={loginProps} onLoadSource={this.recheckAuth}    component={()=>(<RootComponent onRequestCheck = {this.recheckAuth}/> )}/>
-					<AuthRoute exact loggedIn={this.state.loggedIn} path='/accounts' loginProps={loginProps} onLoadSource={this.recheckAuth}    component={()=>(<UsersLanding onRequestCheck = {this.recheckAuth}/> )}/>
-					<AuthRoute exact loggedIn={this.state.loggedIn} path='/lectures' loginProps={loginProps} onLoadSource={this.recheckAuth}    component={()=>(<LecturesLanding onRequestCheck = {this.recheckAuth}/> )}/>
-	<AuthRoute exact loggedIn={this.state.loggedIn} path='/lectures/edit_timetable' loginProps={loginProps} onLoadSource={this.recheckAuth}    component={()=>(<LectureEditor onRequestCheck = {this.recheckAuth}/> )}/>
-	<AuthRoute exact loggedIn={this.state.loggedIn} path='/lectures/suggest' loginProps={loginProps} onLoadSource={this.recheckAuth}    component={()=>(<SuggestionForm onRequestCheck = {this.recheckAuth}/> )}/>
-	<AuthRoute exact loggedIn={this.state.loggedIn} path='/lectures/suggestion_list' loginProps={loginProps} onLoadSource={this.recheckAuth}    component={()=>(<LectureSuggestionList onRequestCheck = {this.recheckAuth}/> )}/>
-	<AuthRoute exact loggedIn={this.state.loggedIn} path='/lectures/lecture_list' loginProps={loginProps} onLoadSource={this.recheckAuth}    component={()=>(<LectureList onRequestCheck = {this.recheckAuth}/> )}/>
+						<AuthRoute {...AuthRouteProps} exact path='/' component={()=>(<RootComponent onRequestCheck = {this.recheckAuth}/> )}/>
+						<AuthRoute {...AuthRouteProps} exact path='/accounts' component={()=>(<UsersLanding onRequestCheck = {this.recheckAuth}/> )}/>
+						<AuthRoute {...AuthRouteProps} exact  path='/lectures' component={()=>(<LecturesLanding onRequestCheck = {this.recheckAuth}/> )}/>
+						<AuthRoute {...AuthRouteProps} exact  path='/lectures/edit_timetable' component={()=>(<TableGetter onRequestCheck = {this.recheckAuth}/> )}/>
+						<AuthRoute {...AuthRouteProps} exact  path='/lectures/suggest' component={()=>(<SuggestionForm onRequestCheck = {this.recheckAuth}/> )}/>
+						<AuthRoute {...AuthRouteProps} exact  path='/lectures/suggestion_list' component={()=>(<LectureSuggestionList onRequestCheck = {this.recheckAuth}/> )}/>
+						<AuthRoute {...AuthRouteProps} exact  path='/lectures/lecture_list' component={()=>(<LectureList onRequestCheck = {this.recheckAuth}/> )}/>
 	</Switch>
 	</main>
 );

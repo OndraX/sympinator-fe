@@ -7,10 +7,14 @@ return new Date(new Date().getTime()+24*60*60*1000);
 var UserLoginSession = (function() {
 	var UserData;
 	var getData = function() {
-		UserData = JSON.parse(localStorage.getItem('UserData'))
-		console.log("GETTING USER DATA AT LOAD",UserData);
-		if(!UserData) {
+		var data = localStorage.getItem('UserData');
+		//console.log("getData Called",data);
+		if (!data) {
 			UserData = {"id":null,"name":null,"token":""};
+			return UserData;
+		}
+		else{
+		UserData = JSON.parse(data)
 		}
 		// TODO: check expired  here
 		return UserData    // Or pull this from cookie/localStorage
@@ -19,12 +23,14 @@ var UserLoginSession = (function() {
 
 	var unsetData= function(data) {
 		UserData = data
+		//console.log("unsetData called",UserData);
 		// TODO: check expired  here
 		localStorage.removeItem('UserData');
 	};
 
 	var setData= function(data) {
-		console.log(data);
+		//console.log("setData called",UserData);
+		//console.log(data);
 		UserData = data
 		if( data.hasOwnProperty("expires")){
 			if( data.expires == null){
@@ -37,6 +43,7 @@ var UserLoginSession = (function() {
 		localStorage.setItem('UserData', JSON.stringify(data));
 	};
 
+	// meant to be universal way of sending queries to backend -- takes care of user data header
 	var authenticatedQuery = function(url, parameters) {
 		if(!parameters.header){
 			parameters.header = {};
@@ -46,12 +53,13 @@ var UserLoginSession = (function() {
 		return fetch(url, parameters);
 		}
 		else return (function(){
-			console.log("User not authenticated -- if you want to send queries this way, please specify parameters.ignoreUnauthenticated: true (or use default fetch API).");
+			//console.log("User not authenticated -- if you want to send queries this way, please specify parameters.ignoreUnauthenticated: true (or use default fetch API).");
 		})();
 	}
 
 window.onbeforeunload = function() {
-    localStorage.setItem("UserData", JSON.stringify(UserData));
+	localStorage.setItem("UserData", JSON.stringify(UserData));
+	//console.log("SVAVING DVATA",localStorage.getItem("UserData"));
 };
 
 window.onload = function() {

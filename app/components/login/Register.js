@@ -91,7 +91,7 @@ class RegisterForm extends React.Component {
 			//TODO: auth headers here
 		}).then((response) =>{return response.json()})
 				.then((response) => {
-					console.log(response);
+					//console.log(response);
 			});
 		}else{
 			this.setState({message:{type:"error",body:"Formulář obsahuje chybně vyplněná pole. Vraťte se prosím a zkontrolujte jejich obsah."}}); //TODO: make this Reactj modal
@@ -165,12 +165,12 @@ class RegisterForm extends React.Component {
 			"UserRole":this.state.userRole,
 		};
 		function success(attrs) {
-			console.log("success",attrs);
+			//console.log("success",attrs);
 			this.setState({valid: true, validationData: {}});
 		}
 		function failure(result) {
-			console.log("validation failure",result);
-			console.log("SHITTYS TATE",this.state);
+			//console.log("validation failure",result);
+			//console.log("SHITTYS TATE",this.state);
 			this.setState({valid: false, validationData: result});
 		}
 		validate.async(data,this.validationConditions).then(success.bind(this),failure.bind(this))

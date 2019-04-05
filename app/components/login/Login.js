@@ -26,12 +26,13 @@ class LoginForm extends React.Component {
 			headers: { "Content-Type": "application/json" },
 		})
 			.then(response => {
-				console.log(response);
+				//console.log(response);
 				return (response.json())} )
 			.then(response => {
 				console.log(response);
 				if(response.Success == true){
 					UserLoginSession.setData({token: response.Token, name: response.Name, id: response.ID});
+					console.log("UST",UserLoginSession.getData());
 					this.props.updateMain();
 				}else{
 					UserLoginSession.unsetData();

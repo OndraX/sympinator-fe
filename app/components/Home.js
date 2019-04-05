@@ -5,7 +5,7 @@ class Home extends React.Component{
 	render(){
 		return(
 			<div>
-				Vítejte v aplikaci Sympinátor. Ejhle přehled Vašich nejnovějších zpráv:
+				Vítejte v aplikaci Sympinátor.
 			</div>
 		);
 	}

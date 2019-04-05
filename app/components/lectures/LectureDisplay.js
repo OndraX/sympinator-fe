@@ -8,7 +8,7 @@ class LectureDisplay extends React.Component {
 
 	render() {
 		return(
-			<div style={{background:"red",padding:"5px",transform:"rotate(4deg)"}} onClick = {this.props.onClickHandler(this.props.ID)}>
+			<div onClick = {this.props.onClickHandler(this.props.ID)}>
 				{this.props.SpeakerName }:
 				{this.props.LectureName }|
 				<emph>

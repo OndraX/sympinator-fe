@@ -9,6 +9,7 @@ class UserList extends React.Component{
 	render(){
 		return(
 			<div>
+				<h2>{JSON.stringify(this.state.data)}</h2>
 			</div>
 			);
 	}

@@ -5,6 +5,7 @@ class UsersLanding extends React.Component {
 	render() {
 		return (
 			<div>
+				<h3>Seznam uživatelů</h3>
 				<UserList />
 			</div>
 		)

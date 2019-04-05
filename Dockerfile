@@ -16,4 +16,4 @@ RUN npm install react-scripts@1.1.1 -g --silent
 EXPOSE 8080
 
 # start app
-CMD ["npm", "start"]
+CMD npm run build

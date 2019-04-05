@@ -5,34 +5,6 @@ import ReactModal from "react-modal";
 import BaseButton from "ui/BaseButton";
 
 const NULLIDENTIFIER = 0;
-// TODO: automatically select sole found item
-// TODO: Drag and Drop
-// TODO: editing
-// TODO: lookable GUI
-// the data to be edited
-//
-// var tableData = {
-// 	lectures: {
-// 		"515b6f2b":{"Name": "Přednášející",
-// 			"lectureName": "Přednáška",
-// 			"bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", },
-// 		"6f2b7d6f":{"Name": "Mluvčí",
-// 			"lectureName": "Promluva",
-// 			"bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", },
-// 		"774f7093":{"Name": "Řečník",
-// 			"lectureName": "Řeč",
-// 			"bio": "Lorem ipsum sit amet,  adipiscing elit.",
-// 			}},
-// 	"day": "Saturday",
-// 	"rooms": ["A1","A2","B3","C5"],
-// 	"hours": ["10:00","12:00","14:00","16:00"],
-// 	"lectureTable":
-// 	[["515b6f2b","774f7093","6f2b7d6f","774f7093"],
-// 		["6f2b7d6f","774f7093","774f7093","515b6f2b"],
-// 		["515b6f2b","774f7093","6f2b7d6f","6f2b7d6f"],
-// 		["515b6f2b","6f2b7d6f","774f7093","774f7093"]]
-// };
-
 
 // {{{ TableGetter -- fetches response request, renders it as table
 class TableGetter extends React.Component {
@@ -41,10 +13,10 @@ class TableGetter extends React.Component {
 		fetch("/api/timetable",{method:"GET"})
 			.then((response) => response.json())
 			.then((response) => {
-				console.log(response.tableData);
+				//console.log(response.tableData);
 				this.setState({tableData:response.tableData});
-			})
-			.catch((error) => console.log(error));
+			}).catch((error) => console.log(error)
+			);
 	}
 	constructor(props){
 		super(props)
@@ -167,12 +139,12 @@ class DayTable extends React.Component {
 						{this.state.lectureTable.map((row,index)=>(<TableRowContainer
 							key={index}
 							rowNameGetter={(y) => {return this.props.data.hours[y];} }
-							lectureGetter={(id) => {console.log("getting lecture id",id,"from",this.props.data.lectures);
+							lectureGetter={(id) => {//console.log("getting lecture id",id,"from",this.props.data.lectures);
 							var lid = this.props.data.lectures[id];
 							if (lid != NULLIDENTIFIER){
 							return lid;
 							}else{
-							console.log("lecture is null");
+							//console.log("lecture is null");
 							return null;
 							}
 							}}

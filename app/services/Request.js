@@ -6,22 +6,18 @@ import React from "react"; // maybe not necessary
 // TODO: give visual cues of update
 // TODO: lookable GUI
 
-defaultRequest(where,how,body,additionalHeaders)
+// {{{ TableHeaderContainer
+class TableHeaderContainer extends React.Component {
+	requestMaker() {
+
 		fetch("/login",
 			{
 				method: "POST",
 				headers: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(body)
-			}
-				)
-// {{{ TableHeaderContainer
-class TableHeaderContainer extends React.Component {
-	requestMaker() {
-
-		
+				}
+		)
 		}
 	render() {
 		return(
